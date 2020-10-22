@@ -1,4 +1,4 @@
-export const GRID_SCALE = 4;
+export const GRID_SCALE = 5;
 export const GRID_EXP = 7;
 //export const CURSOR_RADIUS = 10;
 
