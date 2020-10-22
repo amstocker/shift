@@ -1,7 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import Animation from './animation.js';
 import { setupCanvas } from './utils.js';
+
+const Mouse = {
+    x: 0,
+    y: 0,
+    down: false
+};
 
 
 class Main extends React.Component {
@@ -10,13 +17,21 @@ class Main extends React.Component {
         this.canvas = React.createRef();
         this.animate = this.animate.bind(this);
 
-	// create object here
+	    this.animation = new Animation();
     }
-
+    
     render() {
-        return (
+        return (<div>
             <canvas className={"fullscreen"} ref={this.canvas} ></canvas>
-        );
+            <p className="controls">
+                <button onClick={(e) => this.animation.step()}>
+                    {"Shift"}
+                </button>
+                <button onClick={(e) => this.animation.clear()}>
+                    {"Clear"}
+                </button>
+            </p>
+        </div>);
     }
 
     getCanvasInfo() {
@@ -34,21 +49,30 @@ class Main extends React.Component {
             Mouse.x = parseInt(e.clientX);
             Mouse.y = parseInt(e.clientY);
         });
+        window.addEventListener("mousedown", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            Mouse.down = true;
+        });
+        window.addEventListener("mouseup", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            Mouse.down = false;
+        });
         
         window.requestAnimationFrame(this.animate);
     }
 
     animate() {
         const [cvs, ctx, w, h] = this.getCanvasInfo();
-        // let abs_x = (w - this.odometer.size)/2,
-        //     abs_y = 50;
+        let abs_x = (w - this.animation.size)/2,
+            abs_y = 50;
 
-        // this.odometer.set_pos(abs_x, abs_y);
-        
-	// draw here
+        this.animation.set_pos(abs_x, abs_y);
+       	this.animation.update(Mouse); 
 	
         ctx.clearRect(0, 0, w, h);
-	// draw
+	    this.animation.draw(ctx);
 
         window.requestAnimationFrame(this.animate);
     }
