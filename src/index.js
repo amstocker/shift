@@ -17,7 +17,7 @@ class Main extends React.Component {
         this.canvas = React.createRef();
         this.animate = this.animate.bind(this);
 
-	    this.animation = new Animation();
+        this.animation = new Animation();
     }
     
     render() {
@@ -72,7 +72,7 @@ class Main extends React.Component {
        	this.animation.update(Mouse); 
 	
         ctx.clearRect(0, 0, w, h);
-	    this.animation.draw(ctx);
+        this.animation.draw(ctx);
 
         window.requestAnimationFrame(this.animate);
     }
